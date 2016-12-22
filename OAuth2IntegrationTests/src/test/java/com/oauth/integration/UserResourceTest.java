@@ -38,12 +38,12 @@ import com.oauth.integration.util.OAuthHelper;
 @WebAppConfiguration
 @SpringBootTest(classes=Application.class)
 public class UserResourceTest {
-	
-	@Autowired
-	WebApplicationContext context;
-	
-	@Autowired
-	private FilterChainProxy springSecurityFilterChain;
+    
+    @Autowired
+    WebApplicationContext context;
+    
+    @Autowired
+    private FilterChainProxy springSecurityFilterChain;
     
     private MockMvc mvc;
 
@@ -56,15 +56,15 @@ public class UserResourceTest {
     private static User defUser;
 
     @Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-		mvc = MockMvcBuilders.webAppContextSetup(context)
-				.addFilter(springSecurityFilterChain).build();
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        mvc = MockMvcBuilders.webAppContextSetup(context)
+                .addFilter(springSecurityFilterChain).build();
 
-		if(defUser == null){			
-			defUser = userDao.getUserById(1L);
-		}
-	}
+        if(defUser == null){            
+            defUser = userDao.getUserById(1L);
+        }
+    }
     
     @Test
     public void testEchoAnonymous() throws Exception {
@@ -88,22 +88,22 @@ public class UserResourceTest {
     public void getUserByIdSuccesfull() throws Exception {
         RequestPostProcessor bearerToken = authHelper.addBearerToken("testuser", RoleEnum.ROLE_USER.name());
         ResultActions resultActions = mvc.perform(get("/user/id/" + defUser.getId())
-        		.with(bearerToken)).andDo(print());
+                .with(bearerToken)).andDo(print());
         resultActions
-		        .andExpect(status().isOk())
-		        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-				.andExpect(jsonPath("$.username", is(defUser.getUsername())))
-				.andExpect(jsonPath("$.email", is(defUser.getEmail())))
-				.andExpect(jsonPath("$.name", is(defUser.getName())))
-				.andExpect(jsonPath("$.surname", is(defUser.getSurname())))
-				.andExpect(jsonPath("$.phone", is(defUser.getPhone())));			
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.username", is(defUser.getUsername())))
+                .andExpect(jsonPath("$.email", is(defUser.getEmail())))
+                .andExpect(jsonPath("$.name", is(defUser.getName())))
+                .andExpect(jsonPath("$.surname", is(defUser.getSurname())))
+                .andExpect(jsonPath("$.phone", is(defUser.getPhone())));            
     }
     
     @Test
     public void getUserByIdCouldNotFound() throws Exception {
         RequestPostProcessor bearerToken = authHelper.addBearerToken("testuser", RoleEnum.ROLE_USER.name());
         ResultActions resultActions = mvc.perform(get("/user/id/100")
-        		.with(bearerToken)).andDo(print());
+                .with(bearerToken)).andDo(print());
         
         resultActions
                 .andExpect(status().isOk());
@@ -115,17 +115,17 @@ public class UserResourceTest {
     public void getUserByEmailSuccesfull() throws Exception {
         RequestPostProcessor bearerToken = authHelper.addBearerToken("testuser", RoleEnum.ROLE_USER.name());
         ResultActions resultActions = mvc.perform(post("/user/email")
-        		.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-        		.param("email", defUser.getEmail())
-        		.with(bearerToken)).andDo(print());
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("email", defUser.getEmail())
+                .with(bearerToken)).andDo(print());
         resultActions
-		        .andExpect(status().isOk())
-		        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-				.andExpect(jsonPath("$.username", is(defUser.getUsername())))
-				.andExpect(jsonPath("$.email", is(defUser.getEmail())))
-				.andExpect(jsonPath("$.name", is(defUser.getName())))
-				.andExpect(jsonPath("$.surname", is(defUser.getSurname())))
-				.andExpect(jsonPath("$.phone", is(defUser.getPhone())));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.username", is(defUser.getUsername())))
+                .andExpect(jsonPath("$.email", is(defUser.getEmail())))
+                .andExpect(jsonPath("$.name", is(defUser.getName())))
+                .andExpect(jsonPath("$.surname", is(defUser.getSurname())))
+                .andExpect(jsonPath("$.phone", is(defUser.getPhone())));
     }
     
     @Test
@@ -133,25 +133,25 @@ public class UserResourceTest {
         RequestPostProcessor bearerToken = authHelper.addBearerToken("testuser", RoleEnum.ROLE_USER.name());
 
         Map<String,String> updateParams = new HashMap<String,String>();
-        updateParams.put("name", 	"updatedName");
+        updateParams.put("name",    "updatedName");
         updateParams.put("surname", "updatedSurname");
-        updateParams.put("phone", 	"+44700000000");
+        updateParams.put("phone",   "+44700000000");
         
-		ResultActions resultActions = mvc.perform(put("/user/update")
-        		.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-        		.param("id", 		defUser.getId().toString())
-        		.param("name", 		updateParams.get("name"))
-        		.param("surname", 	updateParams.get("surname"))
-        		.param("phone", 	updateParams.get("phone"))
-        		.with(bearerToken)).andDo(print());
+        ResultActions resultActions = mvc.perform(put("/user/update")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id",        defUser.getId().toString())
+                .param("name",      updateParams.get("name"))
+                .param("surname",   updateParams.get("surname"))
+                .param("phone",     updateParams.get("phone"))
+                .with(bearerToken)).andDo(print());
         resultActions
-		        .andExpect(status().isOk())
-		        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-				.andExpect(jsonPath("$.username", 	is(defUser.getUsername())))
-				.andExpect(jsonPath("$.email", 		is(defUser.getEmail())))
-				.andExpect(jsonPath("$.name", 		is(updateParams.get("name"))))
-				.andExpect(jsonPath("$.surname", 	is(updateParams.get("surname"))))
-				.andExpect(jsonPath("$.phone", 		is(updateParams.get("phone"))));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.username",   is(defUser.getUsername())))
+                .andExpect(jsonPath("$.email",      is(defUser.getEmail())))
+                .andExpect(jsonPath("$.name",       is(updateParams.get("name"))))
+                .andExpect(jsonPath("$.surname",    is(updateParams.get("surname"))))
+                .andExpect(jsonPath("$.phone",      is(updateParams.get("phone"))));
     }
 
 }

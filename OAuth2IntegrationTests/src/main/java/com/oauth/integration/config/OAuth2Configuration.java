@@ -1,5 +1,5 @@
 package com.oauth.integration.config;
-		 
+         
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
@@ -24,64 +24,64 @@ import com.oauth.integration.custom.user.CustomUserDetailsService;
 
 @Configuration
 public class OAuth2Configuration extends SpringBootServletInitializer {
-	
-	@Configuration
-	@EnableGlobalMethodSecurity(securedEnabled = true)
-	protected static class AuthenticationManagerConfiguration extends GlobalMethodSecurityConfiguration {
-		
-		@Autowired
-		private CustomUserDetailsService userDetailsService;
-		
-		@Autowired
-		public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-			auth.userDetailsService(userDetailsService);
-		}		
-	}
-	
-	@Configuration
-	@EnableAuthorizationServer
-	protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
+    
+    @Configuration
+    @EnableGlobalMethodSecurity(securedEnabled = true)
+    protected static class AuthenticationManagerConfiguration extends GlobalMethodSecurityConfiguration {
+        
+        @Autowired
+        private CustomUserDetailsService userDetailsService;
+        
+        @Autowired
+        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+            auth.userDetailsService(userDetailsService);
+        }       
+    }
+    
+    @Configuration
+    @EnableAuthorizationServer
+    protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
-		@Autowired
-		private AuthenticationManager authenticationManager;
+        @Autowired
+        private AuthenticationManager authenticationManager;
 
-		@Autowired
-		@Qualifier("inMemoryTokenStoreBean")
-		private TokenStore tokenStore;
+        @Autowired
+        @Qualifier("inMemoryTokenStoreBean")
+        private TokenStore tokenStore;
 
-		@Override
-		public void configure(AuthorizationServerEndpointsConfigurer endpoints)
-				throws Exception {
-			endpoints.tokenStore(tokenStore).authenticationManager(authenticationManager);
-		}
+        @Override
+        public void configure(AuthorizationServerEndpointsConfigurer endpoints)
+                throws Exception {
+            endpoints.tokenStore(tokenStore).authenticationManager(authenticationManager);
+        }
 
-		@Override
-		public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-			clients.inMemory()
-            		// WEB
-					.withClient("WEB")
-					.authorizedGrantTypes("authorization_code", "refresh_token", "password")
-					.scopes("read", "write");
-		}
-		
-		@Bean
-		public InMemoryTokenStore inMemoryTokenStoreBean() {
-			return new InMemoryTokenStore();
-		}
-		
-		@Primary
-		@Bean
+        @Override
+        public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+            clients.inMemory()
+                    // WEB
+                    .withClient("WEB")
+                    .authorizedGrantTypes("authorization_code", "refresh_token", "password")
+                    .scopes("read", "write");
+        }
+        
+        @Bean
+        public InMemoryTokenStore inMemoryTokenStoreBean() {
+            return new InMemoryTokenStore();
+        }
+        
+        @Primary
+        @Bean
         public AuthorizationServerTokenServices tokenServices() {
             DefaultTokenServices tokenServices = new DefaultTokenServices();
             tokenServices.setSupportRefreshToken(true);
             tokenServices.setTokenStore(this.tokenStore);
             return tokenServices;
         }
-		
-		@Override
-	    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-	        oauthServer.allowFormAuthenticationForClients();
-	    }
+        
+        @Override
+        public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+            oauthServer.allowFormAuthenticationForClients();
+        }
 
-	}
+    }
 }

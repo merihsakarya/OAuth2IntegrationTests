@@ -29,59 +29,59 @@ import com.oauth.integration.entity.User;
 @WebAppConfiguration
 @SpringBootTest(classes=Application.class)
 public class RegistrationResourceTest {
-	
-	@Autowired
-	WebApplicationContext context;
-	
-	@Autowired
-	private FilterChainProxy springSecurityFilterChain;
+    
+    @Autowired
+    WebApplicationContext context;
+    
+    @Autowired
+    private FilterChainProxy springSecurityFilterChain;
     
     private MockMvc mvc;
 
     @Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-		mvc = MockMvcBuilders.webAppContextSetup(context)
-				.addFilter(springSecurityFilterChain).build();
-	}
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        mvc = MockMvcBuilders.webAppContextSetup(context)
+                .addFilter(springSecurityFilterChain).build();
+    }
     
     @Test
     public void testEchoAnonymous() throws Exception {
         ResultActions resultActions = mvc.perform(get("/register/echo")).andDo(print());
 
         resultActions
-        	.andExpect(status().isOk())
-        	.andExpect(content().string("echo"));
+            .andExpect(status().isOk())
+            .andExpect(content().string("echo"));
     }
 
     @Test
     public void createUserSuccessfull() throws Exception {
         
-    	User user = new User();
+        User user = new User();
         user.setUsername("testuser");
         user.setPassword("123456");
         user.setEmail("testuser@domain.com");
         user.setName("TestUser");
         user.setSurname("TestSurname");
         user.setPhone("00902124780371");
-		
+        
         ResultActions resultActions = mvc.perform(post("/register")
-        		.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-        		.param("username",	user.getUsername())
-        		.param("password", 	user.getPassword())
-        		.param("email", 	user.getEmail())
-        		.param("name", 		user.getName())
-        		.param("surname", 	user.getSurname())
-        		.param("phone", 	user.getPhone()))
-        		.andDo(print());
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("username",  user.getUsername())
+                .param("password",  user.getPassword())
+                .param("email",     user.getEmail())
+                .param("name",      user.getName())
+                .param("surname",   user.getSurname())
+                .param("phone",     user.getPhone()))
+                .andDo(print());
         resultActions
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-				.andExpect(jsonPath("$.username", is(user.getUsername())))
-				.andExpect(jsonPath("$.email", is(user.getEmail())))
-				.andExpect(jsonPath("$.name", is(user.getName())))
-				.andExpect(jsonPath("$.surname", is(user.getSurname())))
-				.andExpect(jsonPath("$.phone", is(user.getPhone())));
-	}
+                .andExpect(jsonPath("$.username", is(user.getUsername())))
+                .andExpect(jsonPath("$.email", is(user.getEmail())))
+                .andExpect(jsonPath("$.name", is(user.getName())))
+                .andExpect(jsonPath("$.surname", is(user.getSurname())))
+                .andExpect(jsonPath("$.phone", is(user.getPhone())));
+    }
 
 }

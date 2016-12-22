@@ -18,27 +18,27 @@ import com.oauth.integration.entity.User;
 @Component("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
-	@Autowired
-	private UserDao userDao;
+    @Autowired
+    private UserDao userDao;
 
-	/**
-	 * Returns a populated {@link UserDetails} object. 
-	 * The username is first retrieved from the database and then mapped to 
-	 * a {@link UserDetails} object.
-	 */
-	public UserDetails loadUserByUsername(String param) throws UsernameNotFoundException {
-		try {
-			
-			User domainUser = userDao.getUserByEmail(param);
-			
-			if(domainUser == null){
-				throw new UsernameNotFoundException("UserName " + param + " not found");
-			}
-			
-			return new CustomUser(domainUser);
+    /**
+     * Returns a populated {@link UserDetails} object. 
+     * The username is first retrieved from the database and then mapped to 
+     * a {@link UserDetails} object.
+     */
+    public UserDetails loadUserByUsername(String param) throws UsernameNotFoundException {
+        try {
+            
+            User domainUser = userDao.getUserByEmail(param);
+            
+            if(domainUser == null){
+                throw new UsernameNotFoundException("UserName " + param + " not found");
+            }
+            
+            return new CustomUser(domainUser);
 
-		} catch (Exception e) {
-			throw new AuthenticationServiceException(e.getMessage());
-		}
-	}
+        } catch (Exception e) {
+            throw new AuthenticationServiceException(e.getMessage());
+        }
+    }
 }

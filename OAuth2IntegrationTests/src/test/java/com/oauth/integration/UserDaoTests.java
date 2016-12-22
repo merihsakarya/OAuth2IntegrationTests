@@ -30,69 +30,69 @@ public class UserDaoTests {
     @Autowired
     private TestEntityManager entityManager;
   
-	@Autowired
-	private UserDao userDao;
+    @Autowired
+    private UserDao userDao;
 
     @Test
-    public void createUserSuccesfull() {  	
-    	User user = new User();
-		user.setUsername("testuser-2");
-		user.setPassword("123456");
-		user.setEmail("testuser-2@domain.com");
-		user.setName("Test User - 2");
-		user.setSurname("Test Surname - 2");
-		user.setPhone("00902124780371");
-		user.setRegistrationDate(new Date());
-		user.setActivated(true);
-		
-		List<UserRole> roles = new ArrayList<UserRole>();
-		UserRole role = new UserRole();
-		role.setRole(RoleEnum.ROLE_USER);
-		role.setUser(user);
-		roles.add(role);
-		user.setRoles(roles);
-		
-		userDao.createUser(user);
+    public void createUserSuccesfull() {    
+        User user = new User();
+        user.setUsername("testuser-2");
+        user.setPassword("123456");
+        user.setEmail("testuser-2@domain.com");
+        user.setName("Test User - 2");
+        user.setSurname("Test Surname - 2");
+        user.setPhone("00902124780371");
+        user.setRegistrationDate(new Date());
+        user.setActivated(true);
+        
+        List<UserRole> roles = new ArrayList<UserRole>();
+        UserRole role = new UserRole();
+        role.setRole(RoleEnum.ROLE_USER);
+        role.setUser(user);
+        roles.add(role);
+        user.setRoles(roles);
+        
+        userDao.createUser(user);
 
-    	User result = entityManager.find(User.class, user.getId());
-    	Assert.isTrue(result.equals(user));
+        User result = entityManager.find(User.class, user.getId());
+        Assert.isTrue(result.equals(user));
     }
     
     @Test(expected=javax.validation.ConstraintViolationException.class)
     public void createUserNullEmailError() {
-    	User user = new User();
-		user.setUsername("testuser1");
-		user.setPassword("123456");
+        User user = new User();
+        user.setUsername("testuser1");
+        user.setPassword("123456");
 
-		user.setName("TestUser");
-		user.setSurname("TestSurname");
-		user.setPhone("00902124780371");
-		user.setRegistrationDate(new Date());
-		user.setActivated(true);
-		userDao.createUser(user);
+        user.setName("TestUser");
+        user.setSurname("TestSurname");
+        user.setPhone("00902124780371");
+        user.setRegistrationDate(new Date());
+        user.setActivated(true);
+        userDao.createUser(user);
     } 
 
     @Test
-    public void findUserById() {	
-    	User result = userDao.getUserById(1L);
-    	Assert.isTrue(!result.equals(null));
+    public void findUserById() {    
+        User result = userDao.getUserById(1L);
+        Assert.isTrue(!result.equals(null));
     }
     
     @Test
     public void findErrorUserById() {
-    	User result = userDao.getUserById(100L);
-    	Assert.isTrue(result == null);
+        User result = userDao.getUserById(100L);
+        Assert.isTrue(result == null);
     }
     
     @Test
-    public void findUserByEmail() {	
-    	User result = userDao.getUserByEmail("testuser@domain.com");
-    	Assert.isTrue(!result.equals(null));
+    public void findUserByEmail() { 
+        User result = userDao.getUserByEmail("testuser@domain.com");
+        Assert.isTrue(!result.equals(null));
     }
     
     @Test
     public void findErrorUserByEmail() {
-      	User result = userDao.getUserByEmail("unknown-user@domain.com");
-      	Assert.isTrue(result == null);
+        User result = userDao.getUserByEmail("unknown-user@domain.com");
+        Assert.isTrue(result == null);
     }
 }

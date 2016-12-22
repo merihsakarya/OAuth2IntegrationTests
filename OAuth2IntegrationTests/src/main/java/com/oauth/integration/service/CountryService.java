@@ -11,14 +11,14 @@ import com.oauth.integration.entity.Country;
 @Service
 public class CountryService {
 
-	@Autowired
-	CountryDao countryDao;
-	
-	public Country getCountryByIsoCode(String isoCode){
-		return countryDao.getCountryByIsoCode(isoCode);
-	}
-	
-	public List<Country> listCountries(){
-		return countryDao.listCountries();
-	}
+    @Autowired
+    CountryDao countryDao;
+    
+    public Country getCountryByIsoCode(String isoCode){
+        return countryDao.getCountryByIsoCode(isoCode);
+    }
+    
+    public List<Country> listCountries(){
+        return countryDao.listCountries();
+    }
 }

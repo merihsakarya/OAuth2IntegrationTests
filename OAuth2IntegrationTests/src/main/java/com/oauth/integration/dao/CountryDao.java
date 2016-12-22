@@ -6,7 +6,7 @@ import com.oauth.integration.entity.Country;
 
 public interface CountryDao {
 
-	public Country getCountryByIsoCode(String isoCode);
-	
-	public List<Country> listCountries();
+    public Country getCountryByIsoCode(String isoCode);
+    
+    public List<Country> listCountries();
 }

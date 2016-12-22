@@ -15,35 +15,35 @@ import com.oauth.integration.service.UserService;
 
 @RestController
 class RegistrationResource {
-	
-	@Autowired
-	UserService userService;
-	
-	@RequestMapping(value = "/register/echo", method = RequestMethod.GET)
-	public String echo() {
+    
+    @Autowired
+    UserService userService;
+    
+    @RequestMapping(value = "/register/echo", method = RequestMethod.GET)
+    public String echo() {
         return "echo";
     }
-	
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity<User> createUser(
-			@RequestParam("username") 	String username,
-			@RequestParam("password") 	String password,
-			@RequestParam("email") 		String email,
-			@RequestParam("name") 		String name,
-			@RequestParam("surname") 	String surname,
-			@RequestParam("phone") 		String phone) {	
-		
-		User user = new User();
-		user.setUsername(username);
-		user.setPassword(password);
-		user.setEmail(email);
-		user.setName(name);
-		user.setSurname(surname);
-		user.setPhone(phone);
-		user.setRegistrationDate(new Date());
+    
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity<User> createUser(
+            @RequestParam("username")   String username,
+            @RequestParam("password")   String password,
+            @RequestParam("email")      String email,
+            @RequestParam("name")       String name,
+            @RequestParam("surname")    String surname,
+            @RequestParam("phone")      String phone) { 
+        
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setName(name);
+        user.setSurname(surname);
+        user.setPhone(phone);
+        user.setRegistrationDate(new Date());
         user.setActivated(true);
-		user = userService.createUser(user);
-		
-		return new ResponseEntity<User>(user, HttpStatus.OK);
+        user = userService.createUser(user);
+        
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 }

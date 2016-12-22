@@ -5,9 +5,9 @@ import com.oauth.integration.entity.User;
 
 public class UserModule extends SimpleModule {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public UserModule() {
+    public UserModule() {
         super();
         addSerializer(User.class, new UserSerializer());
         

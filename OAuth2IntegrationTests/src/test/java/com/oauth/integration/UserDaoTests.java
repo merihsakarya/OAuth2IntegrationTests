@@ -22,8 +22,8 @@ import com.oauth.integration.enums.RoleEnum;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@EntityScan(basePackages="simple.template.entity")
-@ComponentScan(basePackages="simple.template.dao") 
+@EntityScan(basePackages="com.oauth.integration.entity")
+@ComponentScan(basePackages="com.oauth.integration.dao") 
 @SpringBootTest(classes=Application.class)
 public class UserDaoTests {
 

@@ -18,18 +18,18 @@ class UserResource {
 	
 	@Autowired
 	UserService userService;
-	
+
 	@RequestMapping(value = "/echo", method = RequestMethod.GET)
 	public String echo() {
-        return "echo";
-    }
+		return "echo";
+	}
 	
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
 	public ResponseEntity<User> getUserById(@PathVariable Long id) {
 		
 		User user = userService.getUserById(id);		
 		return new ResponseEntity<User>(user, HttpStatus.OK);		
-    }
+	}
 
 	@RequestMapping(value = "/email", method = RequestMethod.POST)
 	public ResponseEntity<User> getUserByEmail(@RequestParam String email) {	
@@ -67,6 +67,6 @@ class UserResource {
 		
 		User result = userService.updateUser(id, name, surname, phone);
 		return new ResponseEntity<User>(result, HttpStatus.OK);
-    }
+	}
 	
 }
